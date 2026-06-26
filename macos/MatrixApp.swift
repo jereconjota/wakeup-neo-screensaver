@@ -19,8 +19,11 @@ enum LaunchAgent {
     static var plistPath: String {
         (NSHomeDirectory() as NSString).appendingPathComponent("Library/LaunchAgents/\(label).plist")
     }
+    // El agente vive en su propio bundle anidado (otro bundle id), para que no
+    // colisione con esta app en LaunchServices.
     static var agentBinary: String {
-        (Bundle.main.bundlePath as NSString).appendingPathComponent("Contents/MacOS/MatrixAgent")
+        (Bundle.main.bundlePath as NSString)
+            .appendingPathComponent("Contents/Library/Helpers/MatrixAgent.app/Contents/MacOS/MatrixAgent")
     }
     static var domainTarget: String { "gui/\(getuid())" }
     static var serviceTarget: String { "gui/\(getuid())/\(label)" }
@@ -239,11 +242,23 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         window.title = "Matrix Screensaver"
         window.contentViewController = vc
         window.center()
-        window.makeKeyAndOrderFront(nil)
+        showWindow()
+    }
+
+    // App accessory (sin Dock): hay que forzar la ventana al frente sobre la app activa.
+    private func showWindow() {
         NSApp.activate(ignoringOtherApps: true)
+        window.makeKeyAndOrderFront(nil)
+        window.orderFrontRegardless()
     }
 
     func applicationShouldTerminateAfterLastWindowClosed(_ app: NSApplication) -> Bool { true }
+
+    // Si la abren de nuevo desde Aplicaciones estando viva, volver a mostrar la ventana.
+    func applicationShouldHandleReopen(_ app: NSApplication, hasVisibleWindows: Bool) -> Bool {
+        showWindow()
+        return true
+    }
 }
 
 @main
@@ -251,6 +266,8 @@ enum MatrixAppMain {
     static let delegate = AppDelegate()   // se mantiene viva toda la ejecución
     static func main() {
         let app = NSApplication.shared
+        // .regular: la ventana de ajustes se trae al frente de forma confiable y hay
+        // ícono en el Dock SOLO mientras está abierta (al cerrarla, la app termina).
         app.setActivationPolicy(.regular)
         app.delegate = delegate
         app.run()

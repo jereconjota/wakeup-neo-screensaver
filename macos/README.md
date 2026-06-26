@@ -1,17 +1,25 @@
 # Matrix Screensaver — macOS
 
 En macOS 26 el subsistema de `.saver` nativos está roto para render custom, así que
-esto **no es un `.saver`**. Es una **app** con dos partes dentro de un mismo bundle:
+esto **no es un `.saver`**. Es una app con un **helper anidado**, cada uno con su propio
+bundle id para que no choquen en LaunchServices:
 
-- **`Matrix` (app de config, visible)** — aparece en Aplicaciones y el Dock. Abre una
-  ventana donde activás/desactivás el protector, ajustás el tiempo de espera y probás
-  la vista previa.
-- **`MatrixAgent` (agente headless)** — corre en segundo plano vía un LaunchAgent.
-  Detecta inactividad y muestra el efecto a pantalla completa en todos los monitores;
-  se va al primer movimiento.
+- **`Matrix` — app de config** (`com.jere.matrix`). Aparece en el listado de Aplicaciones
+  / Launchpad. La abrís, sale la ventana de ajustes (activar, tiempo de espera, vista
+  previa), configurás y la cerrás. Tiene ícono en el Dock **solo mientras está abierta**;
+  al cerrar la ventana, la app termina y desaparece del Dock.
+- **`MatrixAgent` — agente headless** (`com.jere.matrix.agent`, en
+  `Contents/Library/Helpers/MatrixAgent.app`). Corre en segundo plano vía un LaunchAgent,
+  **sin Dock**. Detecta inactividad y muestra el efecto a pantalla completa en todos los
+  monitores; se va al primer movimiento. Este es el "screensaver real".
 
 La app de config y el agente comparten ajustes en el dominio `com.jere.matrix.prefs`
 (UserDefaults), así que lo que cambiás en la ventana lo toma el agente en vivo.
+
+> **Elementos de inicio:** al instalar, macOS puede mostrar un aviso de "actividad en
+> segundo plano". Es normal: el agente queda listado en **Ajustes del Sistema › General ›
+> Elementos de inicio y extensiones**. Si alguna vez no arranca, verificá que esté
+> habilitado ahí.
 
 ## Requisitos
 
@@ -63,7 +71,7 @@ El dibujo está en [`MatrixRenderer.swift`](MatrixRenderer.swift). Después de e
 El binario del agente acepta flags útiles para probar:
 
 ```bash
-APP="$HOME/Applications/Matrix Screensaver.app/Contents/MacOS/MatrixAgent"
+APP="$HOME/Applications/Matrix Screensaver.app/Contents/Library/Helpers/MatrixAgent.app/Contents/MacOS/MatrixAgent"
 "$APP" --preview          # muestra el efecto y sale al primer input
 "$APP" --now              # lo muestra y sigue como agente
 "$APP" --idle 60          # fuerza 60 s de inactividad (ignora los ajustes)
