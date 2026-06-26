@@ -66,6 +66,31 @@ El dibujo está en [`NeoRenderer.swift`](NeoRenderer.swift). Después de editar:
 ./build.sh --install
 ```
 
+## Ícono
+
+El ícono se genera por código (sin assets externos) con
+[`icon/make-icon.sh`](icon/make-icon.sh), que dibuja un PNG con AppKit y arma
+`AppIcon.icns`. `build.sh` lo copia al bundle. Para regenerarlo:
+
+```bash
+./icon/make-icon.sh
+```
+
+## Distribuir a otras Macs (notarización)
+
+La build local va firmada **ad-hoc**, lo que alcanza para usarla en tu propia Mac.
+Para repartirla a otras sin el aviso de Gatekeeper hay que **notarizarla**, y eso
+requiere una cuenta de **Apple Developer Program** (de pago) con un certificado
+*Developer ID Application*. Con eso configurado:
+
+```bash
+DEV_ID="Developer ID Application: Tu Nombre (TEAMID)" ./notarize.sh
+```
+
+El script firma con hardened runtime, envía a notarizar y grapa el ticket. El setup
+por única vez (credenciales) está documentado al inicio de
+[`notarize.sh`](notarize.sh).
+
 ## Línea de comandos (opcional)
 
 El binario del agente acepta flags útiles para probar:
