@@ -1,11 +1,11 @@
-# Matrix Screensaver
+# Wake Up, Neo
 
-Un protector de pantalla estilo terminal Matrix: fondo negro con el clásico
+Un protector de pantalla estilo terminal: fondo negro con el clásico
 **`Wake up, Neo...`** en verde fosforescente, glow CRT, viñeta y scanlines.
 Aparece tras unos segundos de inactividad y se va al primer movimiento.
 
 Funciona en **macOS** (app nativa con ventana de configuración) y en **Linux/X11**
-(abre `matrix.html` en Chrome a pantalla completa).
+(abre `index.html` en Chrome a pantalla completa).
 
 ```
  Wake up, Neo... █
@@ -20,7 +20,7 @@ hace el trabajo en segundo plano.
 ```bash
 cd macos
 ./build.sh --install
-open "$HOME/Applications/Matrix Screensaver.app"
+open "$HOME/Applications/WakeUpNeo.app"
 ```
 
 Desde la ventana podés **activar/desactivar**, fijar el **tiempo de espera** y ver una
@@ -30,7 +30,7 @@ Desde la ventana podés **activar/desactivar**, fijar el **tiempo de espera** y 
 
 ## Linux (X11 / GNOME)
 
-Usa `xprintidle` para detectar inactividad y abre [`matrix.html`](matrix.html) en
+Usa `xprintidle` para detectar inactividad y abre [`index.html`](index.html) en
 Chrome/Chromium en modo kiosko.
 
 ```bash
@@ -44,26 +44,26 @@ Detalles, cómo frenarlo y cómo sacar el autostart: [`linux/install.sh`](linux/
 > Para que no compita con GNOME: Energía → "Apagar pantalla cuando esté inactivo" →
 > Nunca, y desactivá el bloqueo automático.
 
-## El efecto (`matrix.html`)
+## El efecto (`index.html`)
 
-[`matrix.html`](matrix.html) es la versión web del efecto, autocontenida (la fuente
+[`index.html`](index.html) es la versión web del efecto, autocontenida (la fuente
 Courier Prime va embebida en base64, sin depender de internet). La usa el "screensaver"
 de Linux y también se puede abrir directo en cualquier navegador.
 
 ## Estructura
 
 ```
-matrix.html                 efecto en web (usado por Linux y standalone)
+index.html                  efecto en web (usado por Linux y standalone)
 courierprime-latin.woff2     fuente del efecto web
 cp.css                       estilos de la fuente
 macos/                       app nativa de macOS (config + agente headless)
-  MatrixApp.swift            ventana de configuración (visible)
-  MatrixAgent.swift          agente headless (inactividad + fullscreen)
-  MatrixRenderer.swift       dibujo del efecto, compartido
+  NeoApp.swift               ventana de configuración (visible)
+  NeoAgent.swift             agente headless (inactividad + fullscreen)
+  NeoRenderer.swift          dibujo del efecto, compartido
   build.sh                   compila e instala
 linux/                       "screensaver" para Linux/X11
   install.sh
-  matrix-screensaver.sh
+  wakeup-neo.sh
 ```
 
 ## Licencia

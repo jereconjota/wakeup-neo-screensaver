@@ -1,15 +1,15 @@
 #!/usr/bin/env bash
-# "Screensaver" Matrix para Linux/X11 (probado con Ubuntu 24.04 + GNOME + Chrome).
-# Cuando el sistema queda inactivo IDLE segundos, abre matrix.html en Chrome a
+# "Screensaver" Wake Up, Neo para Linux/X11 (probado con Ubuntu 24.04 + GNOME + Chrome).
+# Cuando el sistema queda inactivo IDLE segundos, abre index.html en Chrome a
 # pantalla completa (kiosko). Al primer movimiento del mouse/teclado, lo cierra.
 set -uo pipefail
 
 HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-HTML="${MATRIX_HTML:-$HERE/matrix.html}"
+HTML="${NEO_HTML:-$HERE/index.html}"
 IDLE_SECS="${1:-120}"
 IDLE_MS=$(( IDLE_SECS * 1000 ))
 POLL=0.5
-PROFILE="/tmp/matrix-chrome-profile"
+PROFILE="/tmp/wakeup-neo-chrome-profile"
 CHROME="$(command -v google-chrome || command -v google-chrome-stable || command -v chromium || command -v chromium-browser || true)"
 
 if ! command -v xprintidle >/dev/null 2>&1; then

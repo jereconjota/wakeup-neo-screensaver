@@ -1,16 +1,16 @@
 import AppKit
 
 // App de configuración VISIBLE (aparece en Aplicaciones y en el Dock).
-// Abre una ventana con los ajustes del protector de pantalla Matrix:
+// Abre una ventana con los ajustes del protector de pantalla "Wake Up, Neo":
 //   - Activar / desactivar (instala o quita el LaunchAgent que corre el agente)
 //   - Tiempo de espera (inactividad antes de activarse)
 //   - Vista previa
-// El agente headless real es el binario hermano "MatrixAgent" dentro del bundle.
+// El agente headless real es el binario hermano "WakeUpNeoAgent" dentro del bundle.
 
-let kSuite = "com.jere.matrix.prefs"   // distinto del bundle id (com.jere.matrix)
+let kSuite = "com.jere.wakeupneo.prefs"   // distinto del bundle id (com.jere.wakeupneo)
 let kIdleKey = "idleSeconds"
 let kDefaultIdle = 120.0
-let kAgentLabel = "com.jere.matrixapp"
+let kAgentLabel = "com.jere.wakeupneo.agent"
 
 // MARK: - Manejo del LaunchAgent
 
@@ -23,7 +23,7 @@ enum LaunchAgent {
     // colisione con esta app en LaunchServices.
     static var agentBinary: String {
         (Bundle.main.bundlePath as NSString)
-            .appendingPathComponent("Contents/Library/Helpers/MatrixAgent.app/Contents/MacOS/MatrixAgent")
+            .appendingPathComponent("Contents/Library/Helpers/WakeUpNeoAgent.app/Contents/MacOS/WakeUpNeoAgent")
     }
     static var domainTarget: String { "gui/\(getuid())" }
     static var serviceTarget: String { "gui/\(getuid())/\(label)" }
@@ -105,7 +105,7 @@ final class SettingsViewController: NSViewController {
     }
 
     private func buildUI() {
-        let title = NSTextField(labelWithString: "Matrix Screensaver")
+        let title = NSTextField(labelWithString: "Wake Up, Neo")
         title.font = .systemFont(ofSize: 24, weight: .bold)
 
         let subtitle = NSTextField(labelWithString: "Efecto terminal “Wake up, Neo…” a pantalla completa tras inactividad.")
@@ -239,7 +239,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
             backing: .buffered,
             defer: false
         )
-        window.title = "Matrix Screensaver"
+        window.title = "Wake Up, Neo"
         window.contentViewController = vc
         window.center()
         showWindow()
@@ -262,7 +262,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
 }
 
 @main
-enum MatrixAppMain {
+enum NeoAppMain {
     static let delegate = AppDelegate()   // se mantiene viva toda la ejecución
     static func main() {
         let app = NSApplication.shared

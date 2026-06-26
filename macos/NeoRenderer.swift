@@ -2,7 +2,7 @@ import AppKit
 
 // Dibujo del efecto (compartido por la app de config y el agente headless).
 // Todo se pinta con AppKit sobre el NSGraphicsContext actual.
-enum MatrixRenderer {
+enum NeoRenderer {
     static let text = "Wake up, Neo..."
     static let green = NSColor(srgbRed: 0.0, green: 1.0, blue: 65.0 / 255.0, alpha: 1.0)
 

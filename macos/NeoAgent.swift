@@ -4,22 +4,22 @@ import IOKit
 // Agente headless: corre en segundo plano (lanzado por el LaunchAgent), detecta
 // inactividad y muestra el efecto a pantalla completa en todos los monitores;
 // se oculta al primer input. El tiempo de espera se lee en vivo de los ajustes
-// compartidos (UserDefaults suite "com.jere.matrix.prefs"), que escribe la app de config.
+// compartidos (UserDefaults suite "com.jere.wakeupneo.prefs"), que escribe la app de config.
 //
 // Flags:
 //   --now            muestra el efecto ya y sigue como agente normal
 //   --preview        muestra el efecto ya y termina al primer input (vista previa)
 //   --idle SEGUNDOS  fuerza el tiempo de inactividad (ignora los ajustes)
 
-let kSuite = "com.jere.matrix.prefs"   // distinto del bundle id (com.jere.matrix)
+let kSuite = "com.jere.wakeupneo.prefs"   // distinto del bundle id (com.jere.wakeupneo)
 let kIdleKey = "idleSeconds"
 let kDefaultIdle = 120.0
 
-final class MatrixEffectView: NSView {
+final class NeoEffectView: NSView {
     var cursorOn = true { didSet { needsDisplay = true } }
     override var isOpaque: Bool { true }
     override func draw(_ dirtyRect: NSRect) {
-        MatrixRenderer.draw(in: bounds, cursorOn: cursorOn)
+        NeoRenderer.draw(in: bounds, cursorOn: cursorOn)
     }
 }
 
@@ -30,7 +30,7 @@ final class OverlayWindow: NSWindow {
 
 final class Controller: NSObject, NSApplicationDelegate {
     private var windows: [OverlayWindow] = []
-    private var views: [MatrixEffectView] = []
+    private var views: [NeoEffectView] = []
     private var pollTimer: Timer?
     private var blinkTimer: Timer?
     private var showing = false
@@ -129,7 +129,7 @@ final class Controller: NSObject, NSApplicationDelegate {
             w.backgroundColor = .black
             w.isOpaque = true
             w.collectionBehavior = [.canJoinAllSpaces, .fullScreenAuxiliary, .stationary, .ignoresCycle]
-            let v = MatrixEffectView(frame: NSRect(origin: .zero, size: screen.frame.size))
+            let v = NeoEffectView(frame: NSRect(origin: .zero, size: screen.frame.size))
             v.autoresizingMask = [.width, .height]
             w.contentView = v
             windows.append(w)
@@ -139,7 +139,7 @@ final class Controller: NSObject, NSApplicationDelegate {
 }
 
 @main
-enum MatrixAgentMain {
+enum NeoAgentMain {
     static var controller: Controller!   // se mantiene vivo toda la ejecución
 
     static func main() {
