@@ -26,7 +26,11 @@ HELPER_REL="Contents/Library/Helpers/WakeUpNeoAgent.app"
 echo "==> Limpiando"
 rm -rf "$BUILD"
 mkdir -p "$BUILD/$APP/Contents/MacOS"
+mkdir -p "$BUILD/$APP/Contents/Resources"
 mkdir -p "$BUILD/$APP/$HELPER_REL/Contents/MacOS"
+
+echo "==> Ícono"
+cp AppIcon.icns "$BUILD/$APP/Contents/Resources/AppIcon.icns"
 
 echo "==> Info.plist (app de config)"
 cat > "$BUILD/$APP/Contents/Info.plist" <<PLIST
@@ -38,6 +42,7 @@ cat > "$BUILD/$APP/Contents/Info.plist" <<PLIST
     <key>CFBundleIdentifier</key><string>com.jere.wakeupneo</string>
     <key>CFBundleName</key><string>Wake Up, Neo</string>
     <key>CFBundleDisplayName</key><string>Wake Up, Neo</string>
+    <key>CFBundleIconFile</key><string>AppIcon</string>
     <key>CFBundlePackageType</key><string>APPL</string>
     <key>CFBundleShortVersionString</key><string>1.0</string>
     <key>CFBundleVersion</key><string>1</string>
