@@ -7,6 +7,8 @@ Aparece tras unos segundos de inactividad y se va al primer movimiento.
 Funciona en **macOS** (app nativa con ventana de configuración) y en **Linux/X11**
 (abre `index.html` en Chrome a pantalla completa).
 
+**▶ Demo en vivo:** https://jereconjota.github.io/wakeup-neo-screensaver/
+
 ```
  Wake up, Neo... █
 ```
